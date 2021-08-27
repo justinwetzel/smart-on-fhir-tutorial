@@ -10,6 +10,7 @@
     function onReady(smart) {
       var patient = smart.patient;
       var pt = patient.read();
+      var p = defaultPatient();
       if (smart.hasOwnProperty('patient')) {
         var docRef = smart.patient.docRef.api.fetchAll({
           type: 'http://loinc.org|18842-5 ',
@@ -18,7 +19,8 @@
         $.when(pt, docRef).fail(onError);
 
         $.when(pt, docRef).done(function (patient, docRef) {
-          console.log(docRef);
+          p.docref = docRef;
+          alert(docRef);
         })
 
 
@@ -53,7 +55,6 @@
           var hdl = byCodes('2085-9');
           var ldl = byCodes('2089-1');
 
-          var p = defaultPatient();
           p.birthdate = patient.birthDate;
           p.gender = gender;
           p.fname = fname;
@@ -94,6 +95,7 @@
       diastolicbp: { value: '' },
       ldl: { value: '' },
       hdl: { value: '' },
+      docref: { value: '' },
     };
   }
 
@@ -137,6 +139,7 @@
     $('#diastolicbp').html(p.diastolicbp);
     $('#ldl').html(p.ldl);
     $('#hdl').html(p.hdl);
+    $('#docref').html(p.docref);
   };
 
 })(window);
