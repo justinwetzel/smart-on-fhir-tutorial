@@ -12,17 +12,6 @@
       var pt = patient.read();
       var p = defaultPatient();
       if (smart.hasOwnProperty('patient')) {
-        var docRef = smart.patient.docRef.fetchAll({
-          type: 'http://loinc.org|18842-5 ',
-        })
-
-        $.when(pt, docRef).fail(onError);
-
-        $.when(pt, docRef).done(function (patient, docRef) {
-          p.docref = docRef;
-          alert(docRef);
-        })
-
 
         var obv = smart.patient.api.fetchAll({
           type: 'Observation',
