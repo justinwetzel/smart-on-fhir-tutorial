@@ -12,7 +12,7 @@
       var pt = patient.read();
       var p = defaultPatient();
       if (smart.hasOwnProperty('patient')) {
-        var docRef = smart.patient.docRef.api.fetchAll({
+        var docRef = smart.patient.docRef.fetchAll({
           type: 'http://loinc.org|18842-5 ',
         })
 
