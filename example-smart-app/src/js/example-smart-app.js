@@ -78,7 +78,7 @@ const { first } = require("underscore");
           p.hdl = getQuantityValueAndUnit(hdl[0]);
           p.ldl = getQuantityValueAndUnit(ldl[0]);
 
-          download(firstDoc, 'test.pdf');
+          //download(firstDoc, 'test.pdf');
 
           ret.resolve(p);
         });
