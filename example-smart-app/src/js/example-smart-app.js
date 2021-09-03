@@ -78,8 +78,6 @@ const { first } = require("underscore");
           p.hdl = getQuantityValueAndUnit(hdl[0]);
           p.ldl = getQuantityValueAndUnit(ldl[0]);
 
-          //download(firstDoc, 'test.pdf');
-
           ret.resolve(p);
         });
       } else {
@@ -92,13 +90,13 @@ const { first } = require("underscore");
 
   };
 
-  export function base64ToArrayBuffer(base64) {
+  function base64ToArrayBuffer(base64) {
     const binaryString = window.atob(base64); // Comment this if not using base64
     const bytes = new Uint8Array(binaryString.length);
     return bytes.map((byte, i) => binaryString.charCodeAt(i));
   }
 
-  export function createAndDownloadBlobFile(body, filename, extension = 'pdf') {
+  function createAndDownloadBlobFile(body, filename, extension = 'pdf') {
     const blob = new Blob([body]);
     const fileName = `${filename}.${extension}`;
     if (navigator.msSaveBlob) {
