@@ -27,14 +27,11 @@
         var docRef = smart.patient.api.fetchAll({
           type: 'DocumentReference'
         });
-        
-        $.when(pt, docRef).done(function (patient, docRef) {
-          console.log(docRef);
-        });
 
         $.when(pt, obv).fail(onError);
 
-        $.when(pt, obv).done(function (patient, obv) {
+        $.when(pt, obv, docRef).done(function (patient, obv, documentReference) {
+          console.log(documentReference);
           var byCodes = smart.byCodes(obv, 'code');
           var gender = patient.gender;
 
