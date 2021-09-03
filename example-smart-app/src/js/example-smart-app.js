@@ -25,10 +25,10 @@
         });
         
         var docRef = smart.patient.api.fetchAll({
-          type: 'DocumentReference',
+          type: 'DocumentReference'
         });
         
-        $.when(docRef).done(function (docRef) {
+        $.when(pt, docRef).done(function (patient, docRef) {
           console.log(docRef);
         });
 
