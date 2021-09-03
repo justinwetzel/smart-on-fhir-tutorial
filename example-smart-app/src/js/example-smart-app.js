@@ -1,5 +1,3 @@
-const { first } = require("underscore");
-
 (function (window) {
   window.extractData = function () {
     var ret = $.Deferred();
