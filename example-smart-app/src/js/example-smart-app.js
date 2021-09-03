@@ -30,7 +30,7 @@
         
         $.when(docRef).done(function (docRef) {
           console.log(docRef);
-        }
+        });
 
         $.when(pt, obv).fail(onError);
 
