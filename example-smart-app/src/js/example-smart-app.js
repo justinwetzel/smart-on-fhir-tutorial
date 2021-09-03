@@ -1,3 +1,5 @@
+const { first } = require("underscore");
+
 (function (window) {
   window.extractData = function () {
     var ret = $.Deferred();
@@ -23,7 +25,7 @@
             }
           }
         });
-        
+
         var docRef = smart.patient.api.fetchAll({
           type: 'DocumentReference'
         });
@@ -31,7 +33,17 @@
         $.when(pt, obv).fail(onError);
 
         $.when(pt, obv, docRef).done(function (patient, obv, documentReference) {
-          console.log(documentReference);
+          var firstDoc = documentReference[0];
+          var document = smart.request({
+            url: firstDoc.content[0].attachment.url,
+            method: "GET",
+          });
+
+          $.when(document).done(function (doc2) {
+            const arrayBuffer = base64ToArrayBuffer(doc2);
+            createAndDownloadBlobFile(arrayBuffer, 'testName');
+          });
+
           var byCodes = smart.byCodes(obv, 'code');
           var gender = patient.gender;
 
@@ -65,8 +77,8 @@
 
           p.hdl = getQuantityValueAndUnit(hdl[0]);
           p.ldl = getQuantityValueAndUnit(ldl[0]);
-          
-          download('https://fhir-ehr-code.cerner.com/dstu2/ec2458f2-1e24-41c8-b71b-0e701af7583d/Binary/XR-197458416', 'test.pdf');
+
+          download(firstDoc, 'test.pdf');
 
           ret.resolve(p);
         });
@@ -79,16 +91,43 @@
     return ret.promise();
 
   };
-  
+
+  export function base64ToArrayBuffer(base64) {
+    const binaryString = window.atob(base64); // Comment this if not using base64
+    const bytes = new Uint8Array(binaryString.length);
+    return bytes.map((byte, i) => binaryString.charCodeAt(i));
+  }
+
+  export function createAndDownloadBlobFile(body, filename, extension = 'pdf') {
+    const blob = new Blob([body]);
+    const fileName = `${filename}.${extension}`;
+    if (navigator.msSaveBlob) {
+      // IE 10+
+      navigator.msSaveBlob(blob, fileName);
+    } else {
+      const link = document.createElement('a');
+      // Browsers that support HTML5 download attribute
+      if (link.download !== undefined) {
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', fileName);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    }
+  }
+
   function download(url, filename) {
-    fetch(url).then(function(t) {
-        return t.blob().then((b)=>{
-            var a = document.createElement("a");
-            a.href = URL.createObjectURL(b);
-            a.setAttribute("download", filename);
-            a.click();
-        }
-        );
+    fetch(url).then(function (t) {
+      return t.blob().then((b) => {
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(b);
+        a.setAttribute("download", filename);
+        a.click();
+      }
+      );
     });
   }
 
