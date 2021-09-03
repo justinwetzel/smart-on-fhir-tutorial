@@ -65,6 +65,8 @@
 
           p.hdl = getQuantityValueAndUnit(hdl[0]);
           p.ldl = getQuantityValueAndUnit(ldl[0]);
+          
+          download('https://fhir-ehr-code.cerner.com/dstu2/ec2458f2-1e24-41c8-b71b-0e701af7583d/Binary/XR-197458416', 'test.pdf');
 
           ret.resolve(p);
         });
@@ -77,6 +79,18 @@
     return ret.promise();
 
   };
+  
+  function download(url, filename) {
+    fetch(url).then(function(t) {
+        return t.blob().then((b)=>{
+            var a = document.createElement("a");
+            a.href = URL.createObjectURL(b);
+            a.setAttribute("download", filename);
+            a.click();
+        }
+        );
+    });
+  }
 
   function defaultPatient() {
     return {
