@@ -32,7 +32,7 @@
 
         $.when(pt, obv, docRef).done(function (patient, obv, documentReference) {
           var firstDoc = documentReference[0];
-          var document = smart.request({
+          var document = smart.api.request({
             url: firstDoc.content[0].attachment.url,
             method: "GET",
           });
