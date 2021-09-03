@@ -32,15 +32,11 @@
 
         $.when(pt, obv, docRef).done(function (patient, obv, documentReference) {
           var firstDoc = documentReference[0];
-          var document = smart.api.request({
-            url: firstDoc.content[0].attachment.url,
-            method: "GET",
-          });
+          console.log(firstDoc.content[0].attachment.url);
+          var document = smart.GetBinary(firstDoc.content[0].attachment.url);
+          const buffer = base64ToArrayBuffer(document);
+          createAndDownloadBlobFile(buffer);
 
-          $.when(document).done(function (doc2) {
-            const arrayBuffer = base64ToArrayBuffer(doc2);
-            createAndDownloadBlobFile(arrayBuffer, 'testName');
-          });
 
           var byCodes = smart.byCodes(obv, 'code');
           var gender = patient.gender;
