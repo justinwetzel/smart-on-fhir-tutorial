@@ -33,7 +33,7 @@
         $.when(pt, obv, docRef).done(function (patient, obv, documentReference) {
           var firstDoc = documentReference[0];
           console.log(firstDoc.content[0].attachment.url);
-          var document = smart.GetBinary(firstDoc.content[0].attachment.url);
+          var document = smart.getBinary(firstDoc.content[0].attachment.url);
           const buffer = base64ToArrayBuffer(document);
           createAndDownloadBlobFile(buffer);
 
